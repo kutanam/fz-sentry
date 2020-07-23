@@ -2,16 +2,11 @@ package logger
 
 import (
 	"bytes"
-	"context"
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"reflect"
-	"runtime"
 	"time"
 
-	"github.com/go-kit/kit/endpoint"
 	"go.uber.org/zap"
 )
 
@@ -19,7 +14,7 @@ func HttpMiddleware(logger *zap.Logger) func(next http.HandlerFunc) http.Handler
 	return func(next http.HandlerFunc) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
 			ctx := r.Context()
-			ctx = NewLoggerContext(ctx, logger)
+			ctx = NewRequest(ctx, logger)
 			next(w, r)
 		}
 	}
@@ -61,44 +56,20 @@ func HttpRequestMiddleware() func(next http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-func GrpcMiddleware(logger *zap.Logger) endpoint.Middleware {
-	return func(f endpoint.Endpoint) endpoint.Endpoint {
-		return func(ctx context.Context, in interface{}) (out interface{}, err error) {
-			ctx = NewLoggerContext(ctx, logger)
-			return f(ctx, in)
-		}
-	}
-}
-
-func GrpcEndpointMiddleware() endpoint.Middleware {
-	return func(f endpoint.Endpoint) endpoint.Endpoint {
-		return func(ctx context.Context, in interface{}) (out interface{}, err error) {
+func HttpResponseMiddleware() func(next http.HandlerFunc) http.HandlerFunc {
+	return func(next http.HandlerFunc) http.HandlerFunc {
+		return func(w http.ResponseWriter, r *http.Request) {
+			ctx := r.Context()
 			logger := GetLogger(ctx)
 
-			funcName := runtime.FuncForPC(reflect.ValueOf(f).Pointer()).Name()
-			logger.Info(fmt.Sprintf("begin grpc request: %s", funcName))
+			wr := WrapWriter(w)
 
-			start := time.Now()
-			out, err = f(ctx, in)
-			elapsed := time.Since(start)
+			next(wr, r)
 
-			logger.Info(fmt.Sprintf("end grpc request: %s", elapsed))
-			return out, err
-		}
-	}
-}
-
-func GrpcRequestMiddleware() endpoint.Middleware {
-	return func(f endpoint.Endpoint) endpoint.Endpoint {
-		return func(ctx context.Context, in interface{}) (out interface{}, err error) {
-			logger := GetLogger(ctx)
-			body, _ := json.Marshal(in)
-
-			logger.Debug("grpc request payload",
-				zap.String("payload", string(body)),
+			logger.Debug("http response payload",
+				zap.String("payload", string(wr.Body)),
+				zap.Int("http status", wr.StatusCode),
 			)
-
-			return f(ctx, in)
 		}
 	}
 }
