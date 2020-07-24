@@ -4,11 +4,10 @@ import "net/http"
 
 // UnprocessableEntity is a constructor to create UnprocessableEntityError instance
 func UnprocessableEntity(err error) error {
-	return Code(http.StatusUnprocessableEntity, err)
+	return New(http.StatusUnprocessableEntity, err)
 }
 
 // IsUnprocessableEntityError check whether given error is a UnprocessableEntityError
 func IsUnprocessableEntityError(err error) bool {
-	base, ok := err.(*Base)
-	return ok && base.Code == http.StatusUnprocessableEntity
+	return GetInstance(err).Code == http.StatusUnprocessableEntity
 }
