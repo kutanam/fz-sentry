@@ -2,6 +2,7 @@ package httperror
 
 import (
 	"fmt"
+	"net/http"
 )
 
 // Base is a struct that contain basic requirements for http error struct
@@ -11,9 +12,22 @@ type Base struct {
 	Message string `json:"message"`
 }
 
-// Error implement error interface
+// Error implement error interface, and return error Message
 func (e *Base) Error() string {
-	return fmt.Sprintf("%s", e.Message)
+	if "" == e.Message {
+		return e.RawError()
+	}
+	return e.Message
+}
+
+// RawError return basic error message
+func (e *Base) RawError() string {
+	return e.Detail.Error()
+}
+
+// CompleteError return complete error message with http code and base error message
+func (e *Base) CompleteError() string {
+	return fmt.Sprintf("%d %s: %v", e.Code, http.StatusText(e.Code), e.Detail)
 }
 
 // SetMessage set error message returned by this error instance
