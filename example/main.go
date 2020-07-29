@@ -13,11 +13,13 @@ const (
 )
 
 func main() {
-	go func() {
-		devServer()
-	}()
-
+	devServer()
 	prodServer()
+
+	err := http.ListenAndServe(":8080", nil)
+	if nil != err {
+		panic(err)
+	}
 }
 
 func devServer() {
@@ -62,11 +64,6 @@ func devServer() {
 		net/http.(*conn).serve
 		        /usr/local/Cellar/go/1.13.3/libexec/src/net/http/server.go:1890
 	*/
-
-	err := http.ListenAndServe(":8080", nil)
-	if nil != err {
-		panic(err)
-	}
 }
 
 func prodServer() {
@@ -78,9 +75,4 @@ func prodServer() {
 
 	http.Handle("/prd/error", middleware.Logger(controller.Error(), ENV_PRODUCTION, ""))
 	// {"level":"error","ts":1596021222.586966,"caller":"controller/error.go:19","msg":"this is error","serviceName":"example","requestId":"16866cb0-2caa-4c89-8315-7d3df1a35462","cause":"undefined error","stacktrace":"github.com/payfazz/fz-sentry/example/controller.Error.func1\n\t/Users/cashfazz002/go/src/github.com/payfazz/fz-sentry/example/controller/error.go:19\ngithub.com/payfazz/fz-sentry/example/middleware.Logger.func1\n\t/Users/cashfazz002/go/src/github.com/payfazz/fz-sentry/example/middleware/logger.go:19\nnet/http.HandlerFunc.ServeHTTP\n\t/usr/local/Cellar/go/1.13.3/libexec/src/net/http/server.go:2007\nnet/http.(*ServeMux).ServeHTTP\n\t/usr/local/Cellar/go/1.13.3/libexec/src/net/http/server.go:2387\nnet/http.serverHandler.ServeHTTP\n\t/usr/local/Cellar/go/1.13.3/libexec/src/net/http/server.go:2802\nnet/http.(*conn).serve\n\t/usr/local/Cellar/go/1.13.3/libexec/src/net/http/server.go:1890"}
-
-	err := http.ListenAndServe(":9090", nil)
-	if nil != err {
-		panic(err)
-	}
 }
