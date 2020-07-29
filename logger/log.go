@@ -29,6 +29,9 @@ func New(env string, service string, options ...zap.Option) *zap.Logger {
 		logger, _ = zap.NewProduction(options...)
 	}
 
+	c := zap.NewDevelopmentConfig()
+	c.Build()
+
 	logger = logger.With(
 		zap.String("serviceName", service),
 	)
