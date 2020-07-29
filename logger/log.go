@@ -3,6 +3,8 @@ package logger
 import (
 	"context"
 
+	"go.uber.org/zap/zapcore"
+
 	"github.com/gofrs/uuid"
 	"go.uber.org/zap"
 )
@@ -24,13 +26,13 @@ func NewRequest(ctx context.Context, logger *zap.Logger) context.Context {
 }
 
 func New(env string, service string, options ...zap.Option) *zap.Logger {
-	logger, _ := zap.NewDevelopment(options...)
+	cfg := zap.NewDevelopmentConfig()
 	if "development" != env {
-		logger, _ = zap.NewProduction(options...)
+		cfg = zap.NewProductionConfig()
 	}
 
-	c := zap.NewDevelopmentConfig()
-	c.Build()
+	cfg.EncoderConfig.EncodeTime = zapcore.RFC3339TimeEncoder
+	logger, _ := cfg.Build(options...)
 
 	logger = logger.With(
 		zap.String("serviceName", service),
