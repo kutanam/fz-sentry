@@ -21,6 +21,8 @@ func Warning() http.HandlerFunc {
 			zap.String("cause", "warning occured"),
 		)
 
-		loghttp.Write(w, `{"success": true}`, http.StatusOK)
+		loghttp.Write(w, struct {
+			Success bool `json:"success"`
+		}{Success: true}, http.StatusOK)
 	}
 }

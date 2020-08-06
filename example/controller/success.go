@@ -21,6 +21,8 @@ func Success() http.HandlerFunc {
 			zap.String("status", "request processed successfully"),
 		)
 
-		loghttp.Write(w, `{"success": true}`, http.StatusOK)
+		loghttp.Write(w, struct {
+			Success bool `json:"success"`
+		}{Success: true}, http.StatusOK)
 	}
 }

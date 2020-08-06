@@ -63,13 +63,19 @@ func (e *Base) SetMessage(message string) {
 
 // Base constructor for http error with custom message
 func New(code int, err error) Interface {
+	if nil == err {
+		return nil
+	}
+
 	if base := GetInstance(err); nil != base {
 		err = base.GetDetail()
 	}
 
 	return &Base{
-		Code:   code,
-		Detail: err,
+		Code:       code,
+		StatusCode: http.StatusText(code),
+		Detail:     err,
+		Message:    err.Error(),
 	}
 }
 
@@ -78,5 +84,10 @@ func GetInstance(err error) Interface {
 	if result, ok := err.(*Base); ok {
 		return result
 	}
-	return New(500, err)
+	return &Base{
+		Code:       500,
+		StatusCode: http.StatusText(500),
+		Detail:     err,
+		Message:    err.Error(),
+	}
 }
