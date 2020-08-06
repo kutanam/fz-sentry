@@ -3,7 +3,7 @@ package httperror
 import "net/http"
 
 // Forbidden is a constructor to create ForbiddenError instance
-func Forbidden(err error) error {
+func Forbidden(err error) Interface {
 	return New(http.StatusForbidden, err)
 }
 

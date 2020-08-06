@@ -3,7 +3,7 @@ package httperror
 import "net/http"
 
 // UnprocessableEntity is a constructor to create UnprocessableEntityError instance
-func UnprocessableEntity(err error) error {
+func UnprocessableEntity(err error) Interface {
 	return New(http.StatusUnprocessableEntity, err)
 }
 

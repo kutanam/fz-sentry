@@ -3,7 +3,7 @@ package httperror
 import "net/http"
 
 // Gone is a constructor to create GoneError instance
-func Gone(err error) error {
+func Gone(err error) Interface {
 	return New(http.StatusGone, err)
 }
 

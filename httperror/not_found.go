@@ -3,7 +3,7 @@ package httperror
 import "net/http"
 
 // NotFound is a constructor to create NotFoundError instance
-func NotFound(err error) error {
+func NotFound(err error) Interface {
 	return New(http.StatusNotFound, err)
 }
 

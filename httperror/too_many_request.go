@@ -3,7 +3,7 @@ package httperror
 import "net/http"
 
 // TooManyRequests is a constructor to create TooManyRequestsError instance
-func TooManyRequests(err error) error {
+func TooManyRequests(err error) Interface {
 	return New(http.StatusTooManyRequests, err)
 }
 

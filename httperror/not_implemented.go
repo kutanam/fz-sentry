@@ -3,7 +3,7 @@ package httperror
 import "net/http"
 
 // NotImplemented is a constructor to create NotImplementedError instance
-func NotImplemented(err error) error {
+func NotImplemented(err error) Interface {
 	return New(http.StatusNotImplemented, err)
 }
 

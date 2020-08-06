@@ -3,7 +3,7 @@ package httperror
 import "net/http"
 
 // Unauthorized is a constructor to create UnauthorizedError instance
-func Unauthorized(err error) error {
+func Unauthorized(err error) Interface {
 	return New(http.StatusUnauthorized, err)
 }
 

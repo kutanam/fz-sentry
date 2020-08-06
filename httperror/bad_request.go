@@ -3,7 +3,7 @@ package httperror
 import "net/http"
 
 // BadRequest is a constructor to create BadRequestError instance
-func BadRequest(err error) error {
+func BadRequest(err error) Interface {
 	return New(http.StatusBadRequest, err)
 }
 

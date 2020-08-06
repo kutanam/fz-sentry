@@ -3,7 +3,7 @@ package httperror
 import "net/http"
 
 // MethodNotAllowed is a constructor to create MethodNotAllowedError instance
-func MethodNotAllowed(err error) error {
+func MethodNotAllowed(err error) Interface {
 	return New(http.StatusMethodNotAllowed, err)
 }
 

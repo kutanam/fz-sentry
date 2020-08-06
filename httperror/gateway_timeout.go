@@ -3,7 +3,7 @@ package httperror
 import "net/http"
 
 // GatewayTimeout is a constructor to create GatewayTimeoutError instance
-func GatewayTimeout(err error) error {
+func GatewayTimeout(err error) Interface {
 	return New(http.StatusGatewayTimeout, err)
 }
 

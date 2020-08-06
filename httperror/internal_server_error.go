@@ -3,7 +3,7 @@ package httperror
 import "net/http"
 
 // InternalServer is a constructor to create InternalServerError instance
-func InternalServer(err error) error {
+func InternalServer(err error) Interface {
 	return New(http.StatusInternalServerError, err)
 }
 

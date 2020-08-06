@@ -3,7 +3,7 @@ package httperror
 import "net/http"
 
 // BadGateway is a constructor to create BadGatewayError instance
-func BadGateway(err error) error {
+func BadGateway(err error) Interface {
 	return New(http.StatusBadGateway, err)
 }
 
