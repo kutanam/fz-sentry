@@ -9,5 +9,5 @@ func Forbidden(err error) Interface {
 
 // IsForbiddenError check whether given error is a ForbiddenError
 func IsForbiddenError(err error) bool {
-	return GetInstance(err).Code == http.StatusForbidden
+	return GetInstance(err).GetCode() == http.StatusForbidden
 }

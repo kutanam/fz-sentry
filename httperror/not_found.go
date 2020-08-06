@@ -9,5 +9,5 @@ func NotFound(err error) Interface {
 
 // IsNotFoundError check whether given error is a NotFoundError
 func IsNotFoundError(err error) bool {
-	return GetInstance(err).Code == http.StatusNotFound
+	return GetInstance(err).GetCode() == http.StatusNotFound
 }

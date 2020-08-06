@@ -9,5 +9,5 @@ func GatewayTimeout(err error) Interface {
 
 // IsGatewayTimeoutError check whether given error is a GatewayTimeoutError
 func IsGatewayTimeoutError(err error) bool {
-	return GetInstance(err).Code == http.StatusGatewayTimeout
+	return GetInstance(err).GetCode() == http.StatusGatewayTimeout
 }

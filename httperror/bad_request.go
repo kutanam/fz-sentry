@@ -9,5 +9,5 @@ func BadRequest(err error) Interface {
 
 // IsBadRequestError check whether given error is a BadRequestError
 func IsBadRequestError(err error) bool {
-	return GetInstance(err).Code == http.StatusBadRequest
+	return GetInstance(err).GetCode() == http.StatusBadRequest
 }

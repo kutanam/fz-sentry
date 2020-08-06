@@ -9,5 +9,5 @@ func UnprocessableEntity(err error) Interface {
 
 // IsUnprocessableEntityError check whether given error is a UnprocessableEntityError
 func IsUnprocessableEntityError(err error) bool {
-	return GetInstance(err).Code == http.StatusUnprocessableEntity
+	return GetInstance(err).GetCode() == http.StatusUnprocessableEntity
 }

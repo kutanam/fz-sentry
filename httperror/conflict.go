@@ -9,5 +9,5 @@ func Conflict(err error) Interface {
 
 // IsConflictError check whether given error is a ConflictError
 func IsConflictError(err error) bool {
-	return GetInstance(err).Code == http.StatusConflict
+	return GetInstance(err).GetCode() == http.StatusConflict
 }

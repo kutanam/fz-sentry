@@ -9,5 +9,5 @@ func ServiceUnavailable(err error) Interface {
 
 // IsServiceUnavailableError check whether given error is a ServiceUnavailableError
 func IsServiceUnavailableError(err error) bool {
-	return GetInstance(err).Code == http.StatusServiceUnavailable
+	return GetInstance(err).GetCode() == http.StatusServiceUnavailable
 }

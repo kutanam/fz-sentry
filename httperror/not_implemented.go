@@ -9,5 +9,5 @@ func NotImplemented(err error) Interface {
 
 // IsNotImplementedError check whether given error is a NotImplementedError
 func IsNotImplementedError(err error) bool {
-	return GetInstance(err).Code == http.StatusNotImplemented
+	return GetInstance(err).GetCode() == http.StatusNotImplemented
 }

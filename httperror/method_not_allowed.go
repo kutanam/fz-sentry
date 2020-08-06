@@ -9,5 +9,5 @@ func MethodNotAllowed(err error) Interface {
 
 // IsMethodNotAllowedError check whether given error is a MethodNotAllowedError
 func IsMethodNotAllowedError(err error) bool {
-	return GetInstance(err).Code == http.StatusMethodNotAllowed
+	return GetInstance(err).GetCode() == http.StatusMethodNotAllowed
 }

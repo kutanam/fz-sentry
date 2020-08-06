@@ -9,5 +9,5 @@ func Gone(err error) Interface {
 
 // IsGoneError check whether given error is a GoneError
 func IsGoneError(err error) bool {
-	return GetInstance(err).Code == http.StatusGone
+	return GetInstance(err).GetCode() == http.StatusGone
 }
