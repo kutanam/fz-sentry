@@ -6,6 +6,7 @@ import (
 )
 
 type Interface interface {
+	Error() string
 	RawError() string
 	CompleteError() string
 	GetDetail() error

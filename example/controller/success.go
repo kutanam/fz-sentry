@@ -3,6 +3,8 @@ package controller
 import (
 	"net/http"
 
+	"github.com/payfazz/fz-sentry/loghttp"
+
 	"github.com/payfazz/fz-sentry/logger"
 	"go.uber.org/zap"
 )
@@ -19,9 +21,6 @@ func Success() http.HandlerFunc {
 			zap.String("status", "request processed successfully"),
 		)
 
-		w.Header().Set("Content-Type", "text/plain")
-		w.WriteHeader(http.StatusOK)
-
-		_, _ = w.Write([]byte("success"))
+		loghttp.Write(w, `{"success": true}`, http.StatusOK)
 	}
 }

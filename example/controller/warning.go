@@ -3,6 +3,8 @@ package controller
 import (
 	"net/http"
 
+	"github.com/payfazz/fz-sentry/loghttp"
+
 	"github.com/payfazz/fz-sentry/logger"
 	"go.uber.org/zap"
 )
@@ -19,9 +21,6 @@ func Warning() http.HandlerFunc {
 			zap.String("cause", "warning occured"),
 		)
 
-		w.Header().Set("Content-Type", "text/plain")
-		w.WriteHeader(http.StatusBadRequest)
-
-		_, _ = w.Write([]byte("warning"))
+		loghttp.Write(w, `{"success": true}`, http.StatusOK)
 	}
 }
