@@ -1,11 +1,18 @@
 package loghttp
 
-import "net/http"
+import (
+	"fmt"
+	"net/http"
+)
 
 type Writer struct {
 	http.ResponseWriter
 	Body       []byte
 	StatusCode int
+}
+
+func (w *Writer) Code() string {
+	return fmt.Sprint(w.StatusCode)
 }
 
 func (w *Writer) Write(body []byte) (int, error) {
