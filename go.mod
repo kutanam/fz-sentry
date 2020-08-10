@@ -7,7 +7,7 @@ require (
 	github.com/bluele/zapslack v0.0.0-20170530053720-3dde4cb45852
 	github.com/go-kit/kit v0.10.0
 	github.com/go-redis/redis v6.15.9+incompatible
-	github.com/go-sql-driver/mysql v1.4.0
+	github.com/go-sql-driver/mysql v1.4.1
 	github.com/gofrs/uuid v3.3.0+incompatible
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/lib/pq v1.8.0

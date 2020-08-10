@@ -6,36 +6,36 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 )
 
-var httpCounterOnce sync.Once
-var httpCounter *prometheus.CounterVec
+var counterOnce sync.Once
+var counter *prometheus.CounterVec
 
-func httpRequestCounter() *prometheus.CounterVec {
-	httpCounterOnce.Do(func() {
-		httpCounter = prometheus.NewCounterVec(
+func requestCounter() *prometheus.CounterVec {
+	counterOnce.Do(func() {
+		counter = prometheus.NewCounterVec(
 			prometheus.CounterOpts{
-				Name: "http_requests_total",
+				Name: "_requests_total",
 				Help: "A counter for requests to the wrapped handler.",
 			},
 			[]string{"path", "method", "code"},
 		)
 
-		prometheus.MustRegister(httpCounter)
+		prometheus.MustRegister(counter)
 	})
 
-	return httpCounter
+	return counter
 }
 
-// IncrementRequestCounter increment http request count and store it as total requests, usage example can be seen in HTTPRequestCounterMiddleware method
+// IncrementRequestCounter increment  request count and store it as total requests, usage example can be seen in HTTPRequestCounterMiddleware method
 // required params:
 // - serviceName: your service name (snake_case)
 // - pattern: your route pattern not the requested url, ex: `/v1/users/:id` (correct); `/v1/users/{id}` (correct); `/v1/users/1` (incorrect)
-// - method: your http request method (GET, POST, PATCH, etc)
-// - code: your http status code (200, 404, 500, etc)
+// - method: your  request method (GET, POST, PATCH, etc)
+// - code: your  status code (200, 404, 500, etc)
 func IncrementRequestCounter(pattern string, method string, code string) {
 	labels := prometheus.Labels{
 		"path":   pattern,
 		"method": method,
 		"code":   code,
 	}
-	httpRequestCounter().With(labels).Inc()
+	requestCounter().With(labels).Inc()
 }
