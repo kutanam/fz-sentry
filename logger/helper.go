@@ -3,6 +3,8 @@ package logger
 import (
 	"encoding/json"
 	"net/http"
+
+	"go.uber.org/zap"
 )
 
 func GetIP(r *http.Request) string {
@@ -13,7 +15,7 @@ func GetIP(r *http.Request) string {
 	return r.RemoteAddr
 }
 
-func GetPayloadString(payload interface{}) string {
+func GetZapPayloadField(payload interface{}) zap.Field {
 	by, _ := json.Marshal(payload)
-	return string(by)
+	return zap.String("payload", string(by))
 }
