@@ -27,7 +27,7 @@ func HttpEndpointMiddleware() func(next http.HandlerFunc) http.HandlerFunc {
 		return DoHTTP(
 			next,
 			func(ctx context.Context, log *zap.Logger, r *http.Request) error {
-				log.Info(fmt.Sprintf("begin http request: %-15s | %-10s | %-15s | %-40s", getIP(r), r.Method, r.Host, r.RequestURI))
+				log.Info(fmt.Sprintf("begin http request: %-15s | %-10s | %-15s | %-40s", GetIP(r), r.Method, r.Host, r.RequestURI))
 				start = time.Now()
 				return nil
 			},
