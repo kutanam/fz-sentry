@@ -4,12 +4,16 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"reflect"
 	"runtime"
 	"time"
 
 	"github.com/go-kit/kit/endpoint"
 	"go.uber.org/zap"
+)
+
+const (
+	MAX_CALLER    = 32 // reserve for max 32 caller stack
+	CALLER_OFFSET = 6  // 6 default stack: runtime.goexit, serveStream, handleStream, processUnaryGRPC, grpc.handler
 )
 
 func GrpcMiddleware(logger *zap.Logger) endpoint.Middleware {
@@ -27,7 +31,10 @@ func GrpcEndpointMiddleware() endpoint.Middleware {
 		return DoGRPC(
 			f,
 			func(ctx context.Context, log *zap.Logger, in interface{}) error {
-				funcName := runtime.FuncForPC(reflect.ValueOf(f).Pointer()).Name()
+				pcs := make([]uintptr, MAX_CALLER)
+				n := runtime.Callers(0, pcs)
+
+				funcName := runtime.FuncForPC(pcs[n-CALLER_OFFSET]).Name()
 				log.Info(fmt.Sprintf("begin grpc request: %s", funcName))
 				start = time.Now()
 				return nil
