@@ -1,13 +1,18 @@
 package logger
 
 import (
-	"github.com/bluele/zapslack"
+	"github.com/payfazz/fz-sentry/slackcore"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
 func SlackHook(slackHookUrl string, outLevel zapcore.Level) zap.Option {
-	return zap.Hooks(zapslack.NewSlackHook(slackHookUrl, outLevel).GetHook())
+	return zap.WrapCore(
+		slackcore.NewWrapper(
+			slackHookUrl,
+			outLevel,
+		),
+	)
 }
 
 func DebugSlackHook(slackHookUrl string) zap.Option {

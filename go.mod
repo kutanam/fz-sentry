@@ -13,5 +13,6 @@ require (
 	github.com/lib/pq v1.8.0
 	github.com/payfazz/fz-router v0.0.0-20200807154353-fb9dfc3429a4
 	github.com/prometheus/client_golang v1.3.0
+	github.com/slack-go/slack v0.7.2
 	go.uber.org/zap v1.15.0
 )
