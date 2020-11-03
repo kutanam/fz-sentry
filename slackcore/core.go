@@ -38,37 +38,37 @@ func (c *slackCore) Write(e zapcore.Entry, fields []zapcore.Field) error {
 		fields...,
 	)
 
-	enc := zapcore.NewMapObjectEncoder()
+	if e.Level >= c.minLevel {
+		enc := zapcore.NewMapObjectEncoder()
 
-	for _, field := range fields {
-		field.AddTo(enc)
+		for _, field := range fields {
+			field.AddTo(enc)
+		}
+
+		attachment := slack.Attachment{
+			Color:    levelColor[e.Level],
+			Fallback: e.Message,
+		}
+
+		attachment.Text = e.Message + "\n"
+		for k, v := range enc.Fields {
+			attachment.Text += fmt.Sprintf("*%s*\n%v\n", k, v)
+		}
+
+		msg := slack.WebhookMessage{
+			Attachments: []slack.Attachment{attachment},
+		}
+
+		err := slack.PostWebhook(c.hookURL, &msg)
+
+		if err != nil {
+			fields = append(fields, zap.String("slack_error", "send event to slack error"))
+		}
 	}
 
-	attachment := slack.Attachment{
-		Color:    levelColor[e.Level],
-		Fallback: e.Message,
-	}
+	err := c.Core.Write(e, fields)
 
-	attachment.Text = e.Message + "\n"
-	for k, v := range enc.Fields {
-		attachment.Text += fmt.Sprintf("*%s*\n%v\n", k, v)
-	}
-
-	msg := slack.WebhookMessage{
-		Attachments: []slack.Attachment{attachment},
-	}
-
-	err := slack.PostWebhook(c.hookURL, &msg)
-
-	if err != nil {
-		fields = append(fields, zap.String("slack_error", "send event to slack error"))
-	}
-
-	if err := c.Core.Write(e, fields); err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }
 
 func (c *slackCore) With(fields []zapcore.Field) zapcore.Core {
