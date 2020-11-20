@@ -9,5 +9,5 @@ func Unauthorized(err error) Interface {
 
 // IsUnauthorizedError check whether given error is a UnauthorizedError
 func IsUnauthorizedError(err error) bool {
-	return GetInstance(err).GetCode() == http.StatusUnauthorized
+	return err != nil && GetInstance(err).GetCode() == http.StatusUnauthorized
 }

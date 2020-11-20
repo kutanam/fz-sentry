@@ -9,5 +9,5 @@ func TooManyRequests(err error) Interface {
 
 // IsTooManyRequestsError check whether given error is a TooManyRequestsError
 func IsTooManyRequestsError(err error) bool {
-	return GetInstance(err).GetCode() == http.StatusTooManyRequests
+	return err != nil && GetInstance(err).GetCode() == http.StatusTooManyRequests
 }

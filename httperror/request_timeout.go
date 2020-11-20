@@ -9,5 +9,5 @@ func RequestTimeout(err error) Interface {
 
 // IsRequestTimeoutError check whether given error is a RequestTimeoutError
 func IsRequestTimeoutError(err error) bool {
-	return GetInstance(err).GetCode() == http.StatusRequestTimeout
+	return err != nil && GetInstance(err).GetCode() == http.StatusRequestTimeout
 }

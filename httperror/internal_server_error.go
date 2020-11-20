@@ -9,5 +9,5 @@ func InternalServer(err error) Interface {
 
 // IsInternalServerError check whether given error is a InternalServerError
 func IsInternalServerError(err error) bool {
-	return GetInstance(err).GetCode() == http.StatusInternalServerError
+	return err != nil && GetInstance(err).GetCode() == http.StatusInternalServerError
 }

@@ -9,5 +9,5 @@ func BadGateway(err error) Interface {
 
 // IsBadGatewayError check whether given error is a BadGatewayError
 func IsBadGatewayError(err error) bool {
-	return GetInstance(err).GetCode() == http.StatusBadGateway
+	return err != nil && GetInstance(err).GetCode() == http.StatusBadGateway
 }

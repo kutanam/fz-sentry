@@ -9,5 +9,5 @@ func InsufficientStorage(err error) Interface {
 
 // IsInsufficientStorageError check whether given error is a InsufficientStorageError
 func IsInsufficientStorageError(err error) bool {
-	return GetInstance(err).GetCode() == http.StatusInsufficientStorage
+	return err != nil && GetInstance(err).GetCode() == http.StatusInsufficientStorage
 }
